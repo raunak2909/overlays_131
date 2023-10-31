@@ -1,12 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -21,8 +27,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isChecked = false;
+  bool isOpen = false;
+
+  List<String> listRadioOptions = [
+    "Male",
+    "Female",
+    "Other"
+  ];
+
+  var selectedGender = "";
 
   @override
   Widget build(BuildContext context) {
@@ -224,8 +244,166 @@ class HomePage extends StatelessWidget {
                 }
               },
               child: Text('Show Time Picker')),
+          ElevatedButton(
+              onPressed: () {
+                showCupertinoModalPopup(
+                    context: context,
+                    builder: (_) {
+                      return Container(
+                        height: 250,
+                        color: Colors.white,
+                        child: CupertinoDatePicker(
+                          onDateTimeChanged: (DateTime value) {
+                            print(
+                                "Selected Date: ${value.day}/${value.month}/${value.year}, ${value.hour}:${value.minute}");
+                          },
+                          initialDateTime: DateTime.now(),
+                          maximumDate: DateTime.now().add(Duration(days: 7)),
+                          minimumDate: DateTime(2000, 9, 29),
+                        ),
+                      );
+                    });
+              },
+              child: Text('Cupertino')),
+          /*Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Checkbox(
+                  activeColor: Colors.green,
+                  checkColor: Colors.yellow,
+                  fillColor: MaterialStateColor.resolveWith((states){
+                    print(states);
+                    if(states.contains(MaterialState.selected)){
+                      return Colors.green;
+                    }
+                    return Colors.tealAccent;
+                  }),
+                  value: isChecked,
+                  splashRadius: 50,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  onChanged: (value) {
+                    isChecked = value!;
+                    setState(() {});
+                  }),
+              Text("Remember me")
+            ],
+          ),*/
+          CheckboxListTile(
+              autofocus: true,
+              onFocusChange: (value){
+                print("Checkbox 1: $value");
+              },
+            title: Text("Remember Me"),
+              controlAffinity: ListTileControlAffinity.leading,
+              value: isChecked, onChanged: (value){
+            isChecked = value!;
+            setState(() {
+
+            });
+          }),/*
+          CheckboxListTile(
+            onFocusChange: (value){
+              print("Checkbox 2: $value");
+            },
+              title: Text("Remember Me"),
+              controlAffinity: ListTileControlAffinity.leading,
+              value: isChecked, onChanged: (value){
+            isChecked = value!;
+            setState(() {
+
+            });
+          }),*/
+          RadioListTile(
+            controlAffinity: ListTileControlAffinity.trailing,
+            title: Text(listRadioOptions[0]),
+              value: listRadioOptions[0], groupValue: selectedGender, onChanged: (value){
+            selectedGender = value!;
+            setState(() {
+
+            });
+          }),
+          RadioListTile(
+              title: Text(listRadioOptions[1]),
+              value: listRadioOptions[1], groupValue: selectedGender, onChanged: (value){
+            selectedGender = value!;
+            setState(() {
+
+            });
+          }),
+          RadioListTile(
+              title: Text(listRadioOptions[2]),
+              value: listRadioOptions[2], groupValue: selectedGender, onChanged: (value){
+            selectedGender = value!;
+            setState(() {
+
+            });
+          }),
+          SwitchListTile(
+            title: Text("Theme"),
+            controlAffinity: ListTileControlAffinity.leading,
+            splashRadius: 34,
+              activeColor: Colors.cyan,
+              subtitle: Text("Change Your App theme.."),
+              thumbIcon: MaterialStateProperty.resolveWith((states) {
+                if(states.contains(MaterialState.selected)){
+                  return Icon(Icons.sunny, color: Colors.white,);
+                }
+                return Icon(Icons.nightlight);
+              }),
+              thumbColor: MaterialStateColor.resolveWith((states){
+                print(states);
+                if(states.contains(MaterialState.selected)){
+                  return Colors.amber;
+                }
+                return Colors.black;
+              }),
+              value: isOpen, onChanged: (value){
+            isOpen = value!;
+            setState(() {
+
+            });
+          })
         ],
       ),
+      /*floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton.small(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(34)
+            ),
+            onPressed: (){
+
+            },
+            child: Icon(Icons.add),
+          ),
+          FloatingActionButton(
+            onPressed: (){
+
+            },
+            child: Icon(Icons.add),
+          ),
+          FloatingActionButton.large(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero
+            ),
+            onPressed: (){
+
+            },
+            child: Icon(Icons.add),
+          ),
+          FloatingActionButton.extended(
+            label: Text("Add"),
+            onPressed: (){
+
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
+      ),*/
+      /*floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,*/
     );
   }
 }
